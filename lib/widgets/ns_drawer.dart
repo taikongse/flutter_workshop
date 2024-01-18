@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
+import 'package:ns_flutter/core/authentication_manager.dart';
 
 Drawer nsDrawer(BuildContext context) {
+  final AuthenticationManager auth = Get.put(AuthenticationManager());
+
   return Drawer(
     backgroundColor: Colors.grey.shade100,
     child: Column(
@@ -17,14 +20,9 @@ Drawer nsDrawer(BuildContext context) {
               onTap: () => Get.toNamed("/"),
             ),
             ListTile(
-              leading: const Icon(Icons.fact_check_outlined),
-              title: const Text("Check Stock"),
+              leading: const Icon(Icons.dashboard),
+              title: const Text("Check stock"),
               onTap: () => Get.toNamed("/check-stock"),
-            ),
-            ListTile(
-              leading: const Icon(Icons.warehouse_outlined),
-              title: const Text("Stock in"),
-              onTap: () => Get.toNamed("/stock-in"),
             ),
           ]),
           Column(
@@ -56,7 +54,10 @@ Drawer nsDrawer(BuildContext context) {
                     ],
                   ),
                   IconButton(
-                      onPressed: () => Navigator.pushNamed(context, "/sign-in"),
+                      onPressed: () {
+                        auth.logOut();
+                        Get.toNamed("/sign-in");
+                      },
                       icon: const Icon(Icons.logout))
                 ],
               ),

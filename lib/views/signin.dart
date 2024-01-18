@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ss_frontend_starter/controllers/staff_controller.dart';
+import 'package:ns_flutter/controllers/signin_controller.dart';
+import 'package:ns_flutter/utils/validator.dart';
 
-class PageSignin extends StatelessWidget {
-  PageSignin({super.key});
-  final StaffController staffController = Get.put(StaffController());
+// ignore: must_be_immutable, use_key_in_widget_constructors
+class PageSignin extends GetView {
+  final cStaff = Get.put(SigninController());
+  final validator = Validator();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void submit(String? value) {
+    if (_formKey.currentState!.validate()) {
+      cStaff.signin();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,54 +36,52 @@ class PageSignin extends StatelessWidget {
             child: Center(
               child: Padding(
                   padding: const EdgeInsets.all(50),
-                  child: Wrap(
-                    spacing: 25,
-                    runSpacing: 25,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 30),
-                        child: Image(
-                          image: AssetImage("assets/img/ns-logo.png"),
+                  child: Form(
+                    key: _formKey,
+                    child: Wrap(
+                      spacing: 25,
+                      runSpacing: 25,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20, bottom: 30),
+                          child: Image(
+                            image: AssetImage("assets/img/ns-logo.png"),
+                          ),
                         ),
-                      ),
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: "Username"),
-                      ),
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: "Password"),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                var isSuccess = staffController.fetchLogin(
-                                    "username", "password");
-                                if (isSuccess) {
-                                  Get.snackbar(
-                                      'NS Success', 'Sign-in succesfuly',
-                                      duration: const Duration(seconds: 2),
-                                      backgroundColor: Colors.green.shade300);
-                                  Get.toNamed("/");
-                                } else {
-                                  Get.snackbar("Error", "Fail to signin.",
-                                      duration: const Duration(seconds: 1),
-                                      backgroundColor: Colors.red.shade400);
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.purple,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 50, vertical: 20),
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Sign in")),
-                          Text("For got password?")
-                        ],
-                      )
-                    ],
+                        TextFormField(
+                          controller: cStaff.username,
+                          validator: validator.inputEmpty,
+                          onFieldSubmitted: submit,
+                          decoration:
+                              const InputDecoration(hintText: "Username"),
+                        ),
+                        TextFormField(
+                          controller: cStaff.password,
+                          validator: validator.inputEmpty,
+                          onFieldSubmitted: submit,
+                          decoration:
+                              const InputDecoration(hintText: "Password"),
+                          obscureText: true,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () => submit(""),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.purple,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 50, vertical: 20),
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                                child: const Text("Sign in")),
+                            const Text("For got password?")
+                          ],
+                        )
+                      ],
+                    ),
                   )),
             ),
           ),

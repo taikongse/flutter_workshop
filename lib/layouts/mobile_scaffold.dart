@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ss_frontend_starter/widgets/ns_app_bar.dart';
-import 'package:ss_frontend_starter/widgets/ns_drawer.dart';
+import 'package:ns_flutter/widgets/ns_app_bar.dart';
+import 'package:ns_flutter/widgets/ns_drawer.dart';
 
 class MobileScaffold extends StatelessWidget {
   final Widget childOutlet;

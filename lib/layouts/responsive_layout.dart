@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ss_frontend_starter/core/authentication_manager.dart';
-import 'package:ss_frontend_starter/layouts/desktop_scaffold.dart';
-import 'package:ss_frontend_starter/layouts/mobile_scaffold.dart';
-import 'package:ss_frontend_starter/layouts/tablet_scaffold.dart';
-import 'package:ss_frontend_starter/views/signin.dart';
+import 'package:ns_flutter/core/authentication_manager.dart';
+import 'package:ns_flutter/layouts/desktop_scaffold.dart';
+import 'package:ns_flutter/layouts/mobile_scaffold.dart';
+import 'package:ns_flutter/layouts/tablet_scaffold.dart';
 
-class ResponsiveLayout extends StatelessWidget {
+class ResponsiveLayout extends GetView<AuthenticationManager> {
   final Widget childOutlet;
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
 
@@ -34,17 +33,15 @@ class ResponsiveLayout extends StatelessWidget {
           if (snapshot.hasError) {
             return errorView(snapshot);
           } else {
-            return Obx(() => _authManager.isLogged.isTrue
-                ? LayoutBuilder(builder: (context, contraints) {
-                    if (contraints.maxWidth < 500) {
-                      return MobileScaffold(childOutlet: childOutlet);
-                    } else if (contraints.maxWidth < 1100) {
-                      return TabletScaffold(childOutlet: childOutlet);
-                    } else {
-                      return DesktopScaffold(childOutlet: childOutlet);
-                    }
-                  })
-                : PageSignin());
+            return LayoutBuilder(builder: (context, contraints) {
+              if (contraints.maxWidth < 500) {
+                return MobileScaffold(childOutlet: childOutlet);
+              } else if (contraints.maxWidth < 1100) {
+                return TabletScaffold(childOutlet: childOutlet);
+              } else {
+                return DesktopScaffold(childOutlet: childOutlet);
+              }
+            });
           }
         }
       },

@@ -9,3 +9,23 @@ class InitailApp {
     required this.apiGateway,
   });
 }
+
+class ApiResponse {
+  dynamic status;
+  dynamic data;
+  dynamic message;
+
+  ApiResponse({
+    this.status,
+    this.data,
+    this.message,
+  });
+
+  factory ApiResponse.fromJson(dynamic json) {
+    return ApiResponse(
+      status: json['status'],
+      data: json['data'],
+      message: json['message'],
+    );
+  }
+}

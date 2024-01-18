@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:ss_frontend_starter/core/cache_manager.dart';
+import 'package:ns_flutter/core/cache_manager.dart';
 
 class AuthenticationManager extends GetxController with CacheManager {
   final isLogged = false.obs;
