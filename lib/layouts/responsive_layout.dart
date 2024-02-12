@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ns_flutter/core/authentication_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:ns_flutter/layouts/desktop_scaffold.dart';
 import 'package:ns_flutter/layouts/mobile_scaffold.dart';
 import 'package:ns_flutter/layouts/tablet_scaffold.dart';
 
-class ResponsiveLayout extends GetView<AuthenticationManager> {
+class ResponsiveLayout extends StatelessWidget {
   final Widget childOutlet;
-  final AuthenticationManager _authManager = Get.put(AuthenticationManager());
 
   Future<void> initializeSettings() async {
-    _authManager.checkLoginStatus();
-    await Future.delayed(const Duration(seconds: 2));
-    if (_authManager.isLogged.isFalse) {
+    await Future.delayed(const Duration(seconds: 1));
+    var localStaff = GetStorage().read("staff");
+    if (localStaff == null) {
       Get.toNamed("/sign-in");
+    } else {
+      var staff = localStaff;
+      if (staff.token == '') {
+        Get.toNamed("/sign-in");
+      }
     }
   }
 
-  ResponsiveLayout({
+  const ResponsiveLayout({
     super.key,
     required this.childOutlet,
   });

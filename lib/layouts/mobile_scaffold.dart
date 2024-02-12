@@ -15,15 +15,12 @@ class MobileScaffold extends StatelessWidget {
     return Scaffold(
       appBar: nsAppBar(),
       drawer: nsDrawer(context),
-      body: SafeArea(
-        top: true,
+      body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: SingleChildScrollView(
-            child: LayoutBuilder(builder: (context, contraints) {
-              return childOutlet;
-            }),
-          ),
+          padding: const EdgeInsets.all(12),
+          child: LayoutBuilder(builder: (context, contraints) {
+            return childOutlet;
+          }),
         ),
       ),
     );

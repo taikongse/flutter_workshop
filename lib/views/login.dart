@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ns_flutter/controllers/signin_controller.dart';
-import 'package:ns_flutter/utils/validator.dart';
 
 // ignore: must_be_immutable, use_key_in_widget_constructors
-class PageSignin extends GetView {
-  final cStaff = Get.put(SigninController());
-  final validator = Validator();
+class PageLogin extends GetView {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  void submit(String? value) {
-    if (_formKey.currentState!.validate()) {
-      cStaff.signin();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +39,28 @@ class PageSignin extends GetView {
                           ),
                         ),
                         TextFormField(
-                          controller: cStaff.username,
-                          validator: validator.inputEmpty,
-                          onFieldSubmitted: submit,
                           decoration:
                               const InputDecoration(hintText: "Username"),
                         ),
                         TextFormField(
-                          controller: cStaff.password,
-                          validator: validator.inputEmpty,
-                          onFieldSubmitted: submit,
                           decoration:
                               const InputDecoration(hintText: "Password"),
                           obscureText: true,
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () => submit(""),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.purple,
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 20),
-                                    textStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
-                                child: const Text("Sign in")),
-                            const Text("For got password?")
-                          ],
+                        SizedBox(
+                          width: context.width,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.purple,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              textStyle:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            child: const Text("Sign in"),
+                          ),
                         )
                       ],
                     ),

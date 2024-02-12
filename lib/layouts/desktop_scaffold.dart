@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ns_flutter/widgets/ns_app_bar.dart';
 import 'package:ns_flutter/widgets/ns_drawer.dart';
 
 class DesktopScaffold extends StatelessWidget {
@@ -12,22 +13,15 @@ class DesktopScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: true,
-        child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              nsDrawer(context),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: SingleChildScrollView(
-                  child: LayoutBuilder(builder: (context, contraints) {
-                    return childOutlet;
-                  }),
-                ),
-              )
-            ]),
+      appBar: nsAppBar(),
+      drawer: nsDrawer(context),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: LayoutBuilder(builder: (context, contraints) {
+            return childOutlet;
+          }),
+        ),
       ),
     );
   }

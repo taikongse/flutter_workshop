@@ -15,10 +15,9 @@ class TabletScaffold extends StatelessWidget {
     return Scaffold(
       appBar: nsAppBar(),
       drawer: nsDrawer(context),
-      body: SafeArea(
-        top: true,
+      body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(12),
           child: LayoutBuilder(builder: (context, contraints) {
             return childOutlet;
           }),
