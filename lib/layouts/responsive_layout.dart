@@ -12,11 +12,11 @@ class ResponsiveLayout extends StatelessWidget {
     await Future.delayed(const Duration(seconds: 1));
     var localStaff = GetStorage().read("staff");
     if (localStaff == null) {
-      Get.toNamed("/sign-in");
+      Get.toNamed("/log-in");
     } else {
       var staff = localStaff;
       if (staff.token == '') {
-        Get.toNamed("/sign-in");
+        Get.toNamed("/log-in");
       }
     }
   }
