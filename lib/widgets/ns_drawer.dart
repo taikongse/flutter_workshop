@@ -60,7 +60,7 @@ Drawer nsDrawer(BuildContext context) {
                   IconButton(
                       onPressed: () {
                         auth.logOut();
-                        Get.toNamed("/sign-in");
+                        Get.toNamed("/log-in");
                       },
                       icon: const Icon(Icons.logout))
                 ],

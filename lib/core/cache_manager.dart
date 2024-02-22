@@ -14,7 +14,7 @@ mixin CacheManager {
 
   Future<void> removeToken() async {
     final box = GetStorage();
-    await box.remove(CacheManagerKey.token.toString());
+    await box.remove('staff');
   }
 }
 
