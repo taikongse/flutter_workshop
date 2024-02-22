@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ns_flutter/layouts/desktop_scaffold.dart';
 import 'package:ns_flutter/layouts/mobile_scaffold.dart';
 import 'package:ns_flutter/layouts/tablet_scaffold.dart';
+import 'package:ns_flutter/models/staff.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget childOutlet;
@@ -14,7 +18,7 @@ class ResponsiveLayout extends StatelessWidget {
     if (localStaff == null) {
       Get.toNamed("/log-in");
     } else {
-      var staff = localStaff;
+      var staff = ModelStaff.fromJson(localStaff);
       if (staff.token == '') {
         Get.toNamed("/log-in");
       }

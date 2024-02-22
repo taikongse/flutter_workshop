@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:ns_flutter/core/authentication_manager.dart';
-
+import 'package:ns_flutter/models/staff.dart';
 Drawer nsDrawer(BuildContext context) {
   final AuthenticationManager auth = Get.put(AuthenticationManager());
+  final staff = ModelStaff.fromJson(GetStorage().read("staff"));
+  var staffName = staff.username?.toString() ?? '';
+  var staffEmail = staff.email?.toString() ?? '';
 
   return Drawer(
     backgroundColor: Colors.grey.shade100,
@@ -39,16 +43,16 @@ Drawer nsDrawer(BuildContext context) {
                       height: 64,
                     ),
                   ),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "AD Administrator",
+                        staffName,
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "yim@ns.co.th",
+                        staffEmail,
                         style: TextStyle(fontSize: 15),
                       ),
                     ],
