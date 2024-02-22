@@ -1,63 +1,24 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:ns_flutter/utils/validator.dart';
 import 'package:ns_flutter/controllers/signup_controller.dart';
+import 'package:ns_flutter/utils/validator.dart';
 
-class PageSignup extends GetView {
+class SignupPage extends StatelessWidget {
   final signupController = Get.put(SignupController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final username = TextEditingController();
-  final password = TextEditingController();
-  final firstName = TextEditingController();
-  final lastName = TextEditingController();
-  final birthDate = TextEditingController();
-  final idCard = TextEditingController();
-  final email = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController birthDateController = TextEditingController();
+  final TextEditingController idCardController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
-  void btngoBack() {
-    Get.toNamed('/log-in');
-  }
-
-  void btnSignup(String? s) {
-    if(_formKey.currentState!.validate()) {
-      print('signup...');
-      signupController.signup(username.text, password.text, firstName.text, lastName.text,  birthDate.text,  idCard.text,  email.text );
-    }
-  }
+  SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String? validateUsername(String? value) {
-      const pattern = r'^[a-zA-z\d]+$';
-      final regex = RegExp(pattern);
-      return value!.isEmpty || !regex.hasMatch(value) ? 'Invalid username' : null;
-    }
-    String? validateFname(String? value){
-      const pattern = r'^[a-zA-z]+$';
-      final regex = RegExp(pattern);
-      return value!.isEmpty || !regex.hasMatch(value) ? 'Invalid First name' : null;
-    }
-    String? validateLname(String? value){
-      const pattern = r'^[a-zA-z]+$';
-      final regex = RegExp(pattern);
-      return value!.isEmpty || !regex.hasMatch(value) ? 'Invalid Last name' : null;
-    }
-    String? validateIdcard(String? value){
-      const pattern = r'^\d{13}$';
-      final regex = RegExp(pattern);
-      return value!.isEmpty || !regex.hasMatch(value) ? 'Invalid ID card' : null;
-    }
-    String? validateEmail(String? value) {
-      const pattern = r'^[.\w-]+@([\w-]+\.)+[\w-]{2,4}$';
-      final regex = RegExp(pattern);
-      return value!.isEmpty || !regex.hasMatch(value) ? 'Invalid email address' : null;
-    }
-    
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -80,7 +41,7 @@ class PageSignup extends GetView {
                     padding: const EdgeInsets.only(left: 40),
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () => btngoBack(),
+                      onPressed: () => Get.toNamed('/log-in'),
                     ),
                   ),
                   const Image(
@@ -88,201 +49,138 @@ class PageSignup extends GetView {
                   ),
                   Container(
                     padding: const EdgeInsets.all(45),
-                    // alignment: Alignment.center,
-                    // width: 800,
-                    // color: Color.fromARGB(255, 102, 89, 89),
                     child: Form(
                       key: _formKey,
                       child: Wrap(
                         direction: Axis.horizontal,
                         alignment: WrapAlignment.center,
-                        // runAlignment: WrapAlignment.center,
-                        // crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: 15,
                         runSpacing: 15,
                         children: [
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: username,
-                              validator: validateUsername,
-                              onFieldSubmitted: btnSignup,
-                              decoration: const InputDecoration(
-                                labelText: 'Username',
-                                prefixIcon: Icon(Icons.person_2),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.purple)
-                                ),
-                              ),
-                            ),
+                          buildTextFormField(
+                            controller: usernameController,
+                            labelText: 'Username',
+                            prefixIcon: Icons.person_2,
+                            validator: Validator().inputEmpty,
                           ),
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: password,
-                              validator: Validator().inputEmpty,
-                              onFieldSubmitted: btnSignup,
-                              decoration: const InputDecoration(
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.password),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.purple)
-                                ),
-                              ),
-                              obscureText: true,
-                            ),
+                          buildTextFormField(
+                            controller: passwordController,
+                            labelText: 'Password',
+                            prefixIcon: Icons.password,
+                            validator: Validator().inputEmpty,
+                            obscureText: true,
                           ),
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: firstName,
-                              validator: validateFname,
-                              onFieldSubmitted: btnSignup,
-                              decoration: const InputDecoration(
-                                labelText: 'First name',
-                                prefixIcon: Icon(Icons.text_fields),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.purple)
-                                ),
-                              ),
-                            ),
+                          buildTextFormField(
+                            controller: firstNameController,
+                            labelText: 'First name',
+                            prefixIcon: Icons.text_fields,
+                            validator: Validator().inputEmpty,
                           ),
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: lastName,
-                              validator: validateLname,
-                              onFieldSubmitted: btnSignup,
-                              decoration: const InputDecoration(
-                                labelText: 'Last name',
-                                prefixIcon: Icon(Icons.text_fields),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.purple)
-                                ),
-                              ),
-                            ),
+                          buildTextFormField(
+                            controller: lastNameController,
+                            labelText: 'Last name',
+                            prefixIcon: Icons.text_fields,
+                            validator: Validator().inputEmpty,
                           ),
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: idCard,
-                              validator: validateIdcard,
-                              onFieldSubmitted: btnSignup,
-                              decoration: const InputDecoration(
-                                labelText: 'ID Card',
-                                prefixIcon: Icon(Icons.credit_card),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.purple)
-                                ),
-                              ),
-                            ),
+                          buildTextFormField(
+                            controller: idCardController,
+                            labelText: 'ID Card',
+                            prefixIcon: Icons.credit_card,
+                            validator: Validator().inputEmpty,
                           ),
-                          SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: email,
-                              validator: validateEmail,
-                              onFieldSubmitted: btnSignup,
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                                prefixIcon: Icon(Icons.email),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.purple)
-                                ),
-                              ),
-                            ),
+                          buildTextFormField(
+                            controller: emailController,
+                            labelText: 'Email',
+                            prefixIcon: Icons.email,
+                            validator: Validator().inputEmpty,
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              width: 300,
-                              child: TextFormField(
-                                controller: birthDate,
-                                validator: Validator().inputEmpty,
-                                onFieldSubmitted: btnSignup,
-                                decoration: const InputDecoration(
-                                  labelText: 'Birth date',
-                                  prefixIcon: Icon(Icons.calendar_today),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey)
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.purple)
-                                  ),
-                                ),
-                                readOnly: true,
-                                onTap: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1950),
-                                    //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime.now(),
-                                  );
-                  
-                                  if (pickedDate != null) {
-                                    String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                    birthDate.text = formattedDate; //set output date to TextField value.
-                                  } else {}
-                                },
-                              ),
-                            ),
+                          buildTextFormField(
+                            controller: birthDateController,
+                            labelText: 'Birth date',
+                            prefixIcon: Icons.calendar_today,
+                            validator: Validator().inputEmpty,
+                            readOnly: true,
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate: DateTime.now(),
+                              );
+
+                              if (pickedDate != null) {
+                                String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                birthDateController.text = formattedDate;
+                              }
+                            },
                           ),
                         ],
                       ),
-
-                    )
+                    ),
                   ),
                   SizedBox(
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () => btnSignup(''),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          signupController.signup(
+                            usernameController.text,
+                            passwordController.text,
+                            firstNameController.text,
+                            lastNameController.text,
+                            birthDateController.text,
+                            idCardController.text,
+                            emailController.text,
+                          );
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 20),
-                        textStyle:
-                            const TextStyle(fontWeight: FontWeight.bold),
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        textStyle: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       child: const Text("Sign up"),
                     ),
                   )
                 ],
               ),
-            )),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  // Future<void> _selectDate() async {
-  //   DateTime? _picked = await showDatePicker(
-  //     context: context,
-  //     firstDate: DateTime(1900),
-  //     lastDate: DateTime.now(),
-  //     initialDate: DateTime.now()
-  //   );
-  //   if(_picked != null) {
-  //     birthDate = _picked.toString().split('')[0] as TextEditingController;
-  //   }
-  // }
+  Widget buildTextFormField({
+    required TextEditingController controller,
+    required String labelText,
+    required IconData prefixIcon,
+    required String? Function(String?) validator,
+    bool obscureText = false,
+    bool readOnly = false,
+    VoidCallback? onTap,
+  }) {
+    return SizedBox(
+      width: 300,
+      child: TextFormField(
+        controller: controller,
+        validator: validator,
+        onFieldSubmitted: (_) {
+          if (readOnly) {
+            onTap?.call();
+          }
+        },
+        decoration: InputDecoration(
+          labelText: labelText,
+          prefixIcon: Icon(prefixIcon),
+          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.purple)),
+        ),
+        obscureText: obscureText,
+        readOnly: readOnly,
+        onTap: onTap,
+      ),
+    );
+  }
 }

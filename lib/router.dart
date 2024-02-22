@@ -5,8 +5,8 @@ import 'package:ns_flutter/views/login.dart';
 import 'package:ns_flutter/views/signup.dart';
 
 List<GetPage<dynamic>>? pageRender = [
-  GetPage(name: '/log-in', page: () => PageLogin()),
-  GetPage(name: '/sign-up', page: () => PageSignup()),
+  GetPage(name: '/log-in', page: () => LoginPage()),
+  GetPage(name: '/sign-up', page: () => SignupPage()),
   GetPage(
       name: "/",
       page: () => const ResponsiveLayout(childOutlet: PageDashboard())),

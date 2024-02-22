@@ -8,30 +8,47 @@ import 'package:ns_flutter/models/staff.dart';
 import 'package:ns_flutter/widgets/ns_snackbar.dart';
 
 class SignupController extends GetxController {
-  final SignupProvider signupProvider =Get.put(SignupProvider());
+  final SignupProvider signupProvider = Get.put(SignupProvider());
+
   Future<void> signup(String username, String password, String firstName, String lastName, String birthDate, String idCard, String email) async {
-    if(username.isNotEmpty && password.isNotEmpty && firstName.isNotEmpty && lastName.isNotEmpty && birthDate.isNotEmpty && idCard.isNotEmpty && email.isNotEmpty) {
+    if (_isValidInputs(username, password, firstName, lastName, birthDate, idCard, email)) {
+      var encryptedPassword = _encryptPassword(password);
       var body = ModelStaff(
         username: username,
-        password: md5.convert(utf8.encode(password)).toString(),
-        firstName:firstName,
+        password: encryptedPassword,
+        firstName: firstName,
         lastName: lastName,
-        birthDate:birthDate,
-        idCard:idCard,
-        email:email
-      ).signupToJason();
-      print('body: ${body}');
-      var res = await signupProvider.signup(body);
-      if(res.statusCode == 200) {
-        var staff = ModelStaff.fromJson(res.body?.data);
-        await GetStorage().write("staff", staff);
+        birthDate: birthDate,
+        idCard: idCard,
+        email: email,
+      ).signupToJson();
+
+      var response = await signupProvider.signup(body);
+      if (response.statusCode == 200) {
+        var staff = ModelStaff.fromJson(response.body?.data);
+        await _saveStaffData(staff);
         Get.toNamed("/");
       } else {
-        print("respose: ${res.body}");
-        var resMsg = res.body == null ? res.statusText:res.body.message;
-        NsAlertError("Process failed", resMsg ?? "failed: $res"); 
+        var errorMessage = _extractErrorMessage(response);
+        NsAlertError("Process failed", errorMessage);
       }
     }
+  }
+
+  bool _isValidInputs(String username, String password, String firstName, String lastName, String birthDate, String idCard, String email) {
+    return username.isNotEmpty && password.isNotEmpty && firstName.isNotEmpty && lastName.isNotEmpty && birthDate.isNotEmpty && idCard.isNotEmpty && email.isNotEmpty;
+  }
+
+  String _encryptPassword(String password) {
+    return md5.convert(utf8.encode(password)).toString();
+  }
+
+  Future<void> _saveStaffData(ModelStaff staff) async {
+    await GetStorage().write("staff", staff);
+  }
+
+  String _extractErrorMessage(Response<dynamic> response) {
+    return response.body == null ? response.statusText : response.body.message ?? "Failed: $response";
   }
 }
 
